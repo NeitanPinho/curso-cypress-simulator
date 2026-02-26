@@ -1,12 +1,12 @@
 describe('template spec', () => {
 
   beforeEach(() => {
+    cy.login()
       cy.visit('./src/index.html?skipCaptcha=true', {
         onBeforeLoad(win){
           win.localStorage.setItem("cookieConsent", "accepted")
       } })
-      cy.get('form > button').click()
-    })
+          })
   
   it('checks the run button disabled and enabled states', () => {
       cy.contains('button', 'Run')
@@ -47,10 +47,8 @@ describe('template spec', () => {
       
   })
   it('Clears the code output when logging off then logging in again', () => {
-      cy.get("textarea[placeholder='Write your Cypress code here...']")
-        .type('cy.visit()')
-      cy.contains('button', "Run").click()
-
+    cy.run('cy.visit()')  
+  
       cy.get("#outputArea", { timeout: 6000 })
         .should('contain', 'Success:')
         .and('contain', 'cy.visit() // Visited URL')
@@ -77,8 +75,9 @@ describe('template spec', () => {
   
   describe("Cypress simulador - Cookies consent", () => {
     beforeEach(() => {
+      cy.login()
       cy.visit('./src/index.html?skipCaptcha=true')
-      cy.contains('button', 'Login').click()
+      
     })
    it('declines on the cookies usage', () => {
     cy.get('#cookieConsent')
@@ -102,15 +101,15 @@ describe('template spec', () => {
       } })
           
     })
-  it.only("disables the captcha verify button when no answer is provided or it's cleared", () => {
+  it("disables the captcha verify button when no answer is provided or it's cleared", () => {
       cy.contains('button', "Verify").should('be.disabled')
       cy.get('#captchaInput').type('2')
       cy.contains('button', "Verify").should('be.enabled')
       cy.get('#captchaInput').clear()
       cy.contains('button', "Verify").should('be.disabled')
   })
-  it.only('shows an error on a wrong captcha answer and goes back to its initial state', () => {
-      cy.get('#captchaInput').type('100')
+  it('shows an error on a wrong captcha answer and goes back to its initial state', () => {
+        cy.get('#captchaInput').type('100')
       cy.contains('button', "Verify").click()
 
       cy.contains('.error', 'Incorrect answer, please try again.')
