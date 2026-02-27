@@ -2,11 +2,12 @@ describe('template spec', () => {
 
   beforeEach(() => {
     cy.login()
-      cy.visit('./src/index.html?skipCaptcha=true', {
+      cy.visit('./src/index.html?skipCaptcha=true&chancesOfError=0', {
         onBeforeLoad(win){
           win.localStorage.setItem("cookieConsent", "accepted")
-      } })
-          })
+         }
+        })
+       })
   
   it('checks the run button disabled and enabled states', () => {
       cy.contains('button', 'Run')
@@ -73,7 +74,7 @@ describe('template spec', () => {
 
 })
   
-  describe("Cypress simulador - Cookies consent", () => {
+describe("Cypress simulador - Cookies consent", () => {
     beforeEach(() => {
       cy.login()
       cy.visit('./src/index.html?skipCaptcha=true')
@@ -91,7 +92,7 @@ describe('template spec', () => {
       .should('be.equal', "declined")
   })
   })
-  describe('Cypress Simulator - Captcha', () => {
+describe('Cypress Simulator - Captcha', () => {
 
   beforeEach(() => {
       cy.visit('./src/index.html', {
@@ -119,3 +120,23 @@ describe('template spec', () => {
       cy.contains('button', "Verify").should('be.disabled')   
   })
     })
+
+describe('Glitch in the Matrix', () => {
+
+  beforeEach(() => {
+    cy.login()
+      cy.visit('./src/index.html?skipCaptcha=true&chancesOfError=1', {
+        onBeforeLoad(win){
+          win.localStorage.setItem("cookieConsent", "accepted")
+         }
+        })
+       })
+       
+  it.only('errors out with a glitch in the Matrix', () => {
+    cy.run("cy.visit('http://example.com')")
+
+    cy.get('#outputArea', { timeout:6000 })
+      .should("contain", "There's a glitch in the Matrix.")
+      .and('be.visible')
+    })     
+      })
