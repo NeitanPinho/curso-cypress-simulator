@@ -22,19 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // eslint-disable-next-line no-undef
   lucide.createIcons()
 
-  // const urlParams = new URLSearchParams(window.location.search)
-  // const chancesOfError = urlParams.get("chancesOfError")
-  // const skipCaptcha = urlParams.get("skipCaptcha") === "true"
+  const urlParams = new URLSearchParams(window.location.search)
+  const chancesOfError = urlParams.get("chancesOfError")
+  const skipCaptcha = urlParams.get("skipCaptcha") === "true"
 
-  // const checkExistingSession = () => {
-  //   const sessionData = localStorage.getItem("cypressSimulatorSession")
-  //   if (sessionData) {
-  //     const { expiresAt } = JSON.parse(sessionData)
-  //     if (new Date().getTime() < expiresAt) {
-  //       loginForm.style.display = "none"
-  //       captchaSection.style.display = "none"
-  //       mainContent.style.display = "flex"
-  //       sandwichMenu.style.display = "flex"
+  const checkExistingSession = () => {
+    const sessionData = localStorage.getItem("cypressSimulatorSession")
+    if (sessionData) {
+      const { expiresAt } = JSON.parse(sessionData)
+      if (new Date().getTime() < expiresAt) {
+        loginForm.style.display = "none"
+        captchaSection.style.display = "none"
+        mainContent.style.display = "flex"
+        sandwichMenu.style.display = "flex"
       } else {
         localStorage.removeItem("cypressSimulatorSession")
       }
